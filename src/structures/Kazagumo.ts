@@ -15,7 +15,8 @@ export class KazagumoClient extends Kazagumo {
         }
       },
       new Connectors.DiscordJS(client),
-      config.node
+      config.node,
+      { reconnectTries: 10 }
     );
 
     this.client = client;

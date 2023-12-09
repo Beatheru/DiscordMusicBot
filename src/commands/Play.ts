@@ -2,6 +2,7 @@ import { Message } from "discord.js";
 import { KazagumoClient } from "../structures/Kazagumo";
 import { Args, Command } from "../structures/Models";
 import config from "../config";
+import { checkForVoice } from "../utils/Utils";
 
 export default {
   name: "play",
@@ -9,20 +10,14 @@ export default {
     "Search for a song to play or use a Youtube URL (playlists supported)",
   usage: `${config.prefix}play <url or search term>`,
   async run(message: Message, kazagumo: KazagumoClient, additionalArgs?: Args) {
-    const channel = message.member?.voice.channel;
-    if (!channel) {
-      message.channel.send(
-        "You must be in a voice channel to use this command!"
-      );
-      return;
-    }
+    if (!checkForVoice(message)) return;
 
     const search = message.content.split(/\s+/).slice(1).join(" ");
     const player = await kazagumo.createPlayer({
-      guildId: message.guild!.id,
-      textId: message.channel.id,
-      voiceId: channel.id,
-      volume: 30
+      guildId: message.guildId!,
+      textId: message.channelId,
+      voiceId: message.member!.voice.channel!.id,
+      volume: 20
     });
 
     const result = await kazagumo.search(search, { requester: message.author });
