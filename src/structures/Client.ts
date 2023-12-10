@@ -32,6 +32,7 @@ export class DiscordClient extends Client {
         }
 
         try {
+          message.delete();
           await command.run(message, this.kazagumo);
         } catch (error) {
           console.log(error);
