@@ -27,18 +27,35 @@ export default {
     }
 
     if (result.type === "PLAYLIST") {
-      if (additionalArgs?.top) {
-        result.tracks.forEach((track) => {
-          player.queue.splice(0, 0, track);
-          console.log(`Queued ${track.title} from ${result.playlistName}`);
-        });
+      const singleTrackInPlaylistMatch = search.match(/index=(\d+)$/);
+
+      if (singleTrackInPlaylistMatch) {
+        const index = Number(singleTrackInPlaylistMatch[0].slice(6)) - 1;
+        if (additionalArgs?.top) {
+          player.queue.splice(0, 0, result.tracks[index]);
+          console.log(`Queued ${result.tracks[index].title}`);
+        } else {
+          player.queue.add(result.tracks[index]);
+          console.log(`Queued ${result.tracks[index].title}`);
+        }
       } else {
-        result.tracks.forEach((track) => {
-          player.queue.add(track);
-          console.log(`Queued ${track.title} from ${result.playlistName}`);
-        });
+        if (additionalArgs?.top) {
+          result.tracks.forEach((track) => {
+            player.queue.splice(0, 0, track);
+            console.log(`Queued ${track.title} from ${result.playlistName}`);
+          });
+        } else {
+          result.tracks.forEach((track) => {
+            player.queue.add(track);
+            console.log(`Queued ${track.title} from ${result.playlistName}`);
+          });
+        }
       }
     } else {
+      const timestampMatch = search.match(/t=(\d+)$/);
+      if (timestampMatch)
+        player.data.set(result.tracks[0].identifier, Number(timestampMatch[1]));
+
       if (additionalArgs?.top) {
         player.queue.splice(0, 0, result.tracks[0]);
         console.log(`Queued ${result.tracks[0].title}`);

@@ -4,6 +4,7 @@ import path from "path";
 import config from "../config";
 import { Command } from "./Models";
 import { KazagumoClient } from "./Kazagumo";
+import { init } from "../backend/Express";
 
 export class DiscordClient extends Client {
   public commands: Collection<string, Command> = new Collection();
@@ -14,6 +15,7 @@ export class DiscordClient extends Client {
     this.kazagumo = new KazagumoClient(this);
     this.login(config.token);
     this.registerCommands();
+    init();
 
     this.once(Events.ClientReady, () => {
       console.log("Client ready!");

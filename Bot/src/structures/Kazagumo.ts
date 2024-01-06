@@ -33,9 +33,9 @@ export class KazagumoClient extends Kazagumo {
       )
     );
 
-    this.shoukaku.on("debug", (_, info) =>
+    /* this.shoukaku.on("debug", (_, info) =>
       console.debug(`Lavalink: Debug,`, info)
-    );
+    ); */
 
     this.shoukaku.on("disconnect", (_, players, moved) => {
       if (moved) return;
@@ -45,6 +45,10 @@ export class KazagumoClient extends Kazagumo {
 
     this.on("playerStart", (player, track) => {
       console.log(`Now playing ${track.title} by ${track.author}`);
+      player.data.set("currentTrackStartTime", Date.now());
+      if (player.data.get(track.identifier)) {
+        player.seek(player.data.get(track.identifier) * 1000);
+      }
     });
 
     /* this.on("playerEnd", (player) => {}); */

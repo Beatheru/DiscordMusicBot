@@ -12,5 +12,8 @@ export default {
     }
   ],
   expressPort: Number(process.env.EXPRESS_PORT) || 4001,
-  domain: process.env.DOMAIN as string
+  domain: process.env.DOMAIN as string,
+  corsOptions: {
+    origin: ["http://localhost:5173"]
+  }
 };

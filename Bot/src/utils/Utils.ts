@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { clients } from "../backend/Controller";
 
 export const checkForVoice = (message: Message) => {
   const channel = message.member?.voice.channel;
@@ -28,5 +29,11 @@ export const msToTime = (duration: number): string => {
     minutes +
     (seconds < 10 ? ":0" : ":") +
     seconds
+  );
+};
+
+export const updateClients = () => {
+  clients.forEach((client) =>
+    client.res.write(`data: ${JSON.stringify(true)}\n\n`)
   );
 };
