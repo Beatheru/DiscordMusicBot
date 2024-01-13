@@ -7,10 +7,10 @@ EXPOSE 4001
 FROM base as dev
 RUN npm install --silent
 COPY . /app/
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
 
 FROM base as prod
 RUN npm install --production --silent
 RUN npm install -g pm2 --silent
-COPY ./dist/ /app/
+RUN npm run build
 CMD ["pm2-runtime", "--watch", "./Bot.js"]

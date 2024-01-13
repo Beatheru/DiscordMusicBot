@@ -10,7 +10,7 @@ services:
   musicbot:
     build:
       context: .
-      target: dev
+      target: prod
     container_name: MusicBot
     restart: "always"
     depends_on:
