@@ -11,7 +11,7 @@ CMD ["npm", "run", "dev"]
 
 FROM base as prod
 RUN npm install --production --silent
-RUN npm install -g --silent pm2 
+RUN npm install -g --silent pm2 typescript
 COPY . /app/
 RUN npm run build
 CMD ["pm2-runtime", "./dist/Bot.js"]
